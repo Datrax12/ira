@@ -51,16 +51,19 @@ button {
 }
 #btn-no { background: #ffcdd2; color: #c62828; }
 
-/* ================= TIKET BARU ================= */
+/* =========================
+   SLIDE 8 - TIKET KENCAN
+========================= */
 
 .ticket-card{
     background:#fff;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    width:100%;
+    max-width:340px;
+    margin:0 auto;
+    border-radius:20px;
     border:1px solid #ececec;
-    max-width:320px;
-    margin:0 auto 20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    overflow:hidden;
 }
 
 .ticket-top{
@@ -72,28 +75,28 @@ button {
 
 .admit{
     font-size:10px;
+    font-weight:700;
     letter-spacing:3px;
     color:#a7adb6;
-    font-weight:700;
 }
 
 .stamp{
     width:42px;
     height:42px;
     border-radius:50%;
-    border:2px solid #f3c4c4;
+    border:2px solid #f3c8d0;
     display:flex;
     align-items:center;
     justify-content:center;
-    color:#eb9dac;
+    color:#e78da0;
     font-size:18px;
 }
 
 .ticket-title{
-    font-family:'Kalam',cursive;
+    margin:8px 18px 18px;
     font-size:28px;
-    margin:5px 18px 15px;
-    color:#2f2f2f;
+    color:#222;
+    text-align:left;
 }
 
 .receiver{
@@ -103,15 +106,38 @@ button {
     padding:0 18px 15px;
 }
 
-.receiver img{
-    width:38px;
-    height:38px;
+.receiver img,
+.avatar-ticket{
+    width:60px !important;
+    height:60px !important;
+    min-width:60px !important;
+    max-width:60px !important;
+    min-height:60px !important;
+    max-height:60px !important;
+
     border-radius:50%;
     object-fit:cover;
-    max-width:38px;
-    max-height:38px;
+    display:block;
 }
 
+.receiver small{
+    display:block;
+    font-size:10px;
+    color:#999;
+    letter-spacing:1px;
+    margin-bottom:4px;
+}
+
+.receiver .value{
+    font-size:15px;
+    font-weight:600;
+    color:#222;
+}
+
+.ticket-divider{
+    border-top:1px dashed #e5e7eb;
+    margin:0 18px 18px;
+}
 
 .ticket-item{
     display:flex;
@@ -121,77 +147,62 @@ button {
     margin-bottom:14px;
 }
 
-.ticket-item small,
-.receiver small{
-    display:block;
-    font-size:10px;
-    letter-spacing:1px;
-    color:#9aa0a6;
-    margin-bottom:3px;
-}
-
-.ticket-item .value,
-.receiver .value{
-    font-size:14px;
-    color:#222;
-    line-height:1.4;
-}
-
 .icon{
-    width:28px;
-    height:28px;
+    width:30px;
+    height:30px;
     border-radius:50%;
-    background:#edf5ff;
+    background:#eef5ff;
     display:flex;
     align-items:center;
     justify-content:center;
     flex-shrink:0;
 }
 
+.ticket-text{
+    flex:1;
+}
+
+.ticket-item small{
+    display:block;
+    font-size:10px;
+    color:#999;
+    letter-spacing:1px;
+    margin-bottom:2px;
+}
+
+.ticket-item .value{
+    font-size:14px;
+    color:#222;
+    line-height:1.5;
+}
+
+.special{
+    color:#e25577;
+    font-weight:600;
+}
+
 .ticket-note{
     text-align:center;
-    padding:10px 20px 0;
+    padding:5px 20px;
     font-size:12px;
     line-height:1.6;
     color:#666;
-    font-family:'Kalam',cursive;
 }
 
 .ticket-footer{
     text-align:center;
     padding:10px 20px 20px;
-    color:#7a7a7a;
+    color:#777;
     font-size:11px;
 }
 
-/* Divider style untuk slide 8 */
-.ticket-divider{
-    height: 0;
-    border-top: 1px dashed #e2e8f0;
-    margin: 6px 18px;
+.ticket-actions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:20px;
 }
 
-/* Rapihin struktur tiket item supaya jaraknya konsisten */
-.ticket-item .ticket-text{
-    flex: 1;
-}
-
-/* Override ukuran receiver img (hindari duplikasi rule) */
-.receiver img{
-    width:38px;
-    height:38px;
-    max-width:38px;
-    max-height:38px;
-    min-width:38px;
-    min-height:38px;
-    border-radius:50%;
-    object-fit:cover;
-    display:block;
-}
-
-.avatar-ticket{
-    width:60px !important;
-    height:60px !important;
-    border-radius:50% !important;
-    object-fit:cover !important;
+.ticket-actions button{
+    width:100%;
 }
