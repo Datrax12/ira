@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Kekalahan Ira</title>
+    
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- HTML2CANVAS LIBRARY UNTUK DOWNLOAD TIKET -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- ==================== STYLE (CSS) ==================== -->
+    <style>
+        :root {
+            --bg-color: #fdf5f2;
+            --primary-blue: #5b82a6;
+            --primary-hover: #4a6d90;
+            --text-dark: #333333;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .handwritten {
+            font-family: 'Kalam', cursive;
+        }
+
+        /* CONTAINER UTAMA SLIDE */
+        .slide-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* BASE STYLE UNTUK SETIAP HALAMAN */
+        .slide {
+            display: none;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 30px 20px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        /* ANIMASI PERPINDAHAN HALAMAN (SLIDE IN) */
+        .slide.active {
+            display: block;
+            animation: slideIn 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* STYLE ELEMEN FORM DAN TOMBOL */
+        h2, h3 {
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(91, 130, 166, 0.2);
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #64748b;
+            box-shadow: none;
+            margin-top: 8px;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+            color: #334155;
+        }
+
+        /* PILIHAN GRID (SLIDE AKTIVITAS) */
+        .grid-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .grid-item {
+            background: #f8fafc;
+            border: 2px solid #f1f5f9;
+            padding: 14px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+        }
+
+        .grid-item.selected {
+            background: #f0f7ff;
+            border-color: var(--primary-blue);
+            transform: scale(1.02);
+        }
+
+        .grid-item span {
+            font-size: 24px;
+        }
+
+        /* PILLS OPTIONS (SLIDE DRESS CODE) */
+        .pills-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pill {
+            background: #f8fafc;
+            border: 2px solid #f1f5f9;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .pill.selected {
+            background: #f0f7ff;
+            border-color: var(--primary-blue);
+            color: var(--primary-blue);
+            font-weight: 700;
+        }
+
+        input[type="text"], input[type="date"], textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 2px solid #f1f5f9;
+            background-color: #f8fafc;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary-blue);
+        }
+
+        /* POLAROID STYLE */
+        .polaroid {
+            background: white;
+            padding: 12px 12px 24px 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            border-radius: 4px;
+            margin: 0 auto 20px auto;
+            width: 160px;
+            transform: rotate(-3deg);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        /* ENVELOPE DESIGN */
+        .envelope-wrapper {
+            font-size: 80px;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* FINAL TICKET DESIGN */
+        .ticket-box {
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .ticket-header {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            border-bottom: 2px dashed #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ticket-row {
+            display: flex;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .ticket-label {
+            width: 100px;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .ticket-value {
+            flex: 1;
+            color: #1e293b;
+        }
+
+        /* ==================== LOADING (FLOAT BUNGA) ==================== */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(253, 245, 242, 0.85);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.35s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-card {
+            width: 260px;
+            text-align: center;
+            position: relative;
+        }
+
+        .loading-title {
+            font-weight: 800;
+            color: var(--primary-blue);
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .float-bunga {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto;
+        }
+
+        .bunga {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            filter: drop-shadow(0 10px 12px rgba(0,0,0,0.08));
+            animation: bunga-float 1.9s ease-in-out infinite;
+            opacity: 0.98;
+        }
+
+        .b1 { transform: translate(-50%, -50%) translate(-42px, -10px) rotate(-10deg); animation-delay: 0s; }
+        .b2 { transform: translate(-50%, -50%) translate(42px, -18px) rotate(14deg); animation-delay: 0.25s; font-size: 26px; }
+        .b3 { transform: translate(-50%, -50%) translate(-22px, 44px) rotate(-6deg); animation-delay: 0.45s; font-size: 30px; }
+        .b4 { transform: translate(-50%, -50%) translate(18px, 46px) rotate(10deg); animation-delay: 0.65s; font-size: 24px; }
+
+        @keyframes bunga-float {
+            0%, 100% { translate: 0 0; opacity: 0.95; }
+            50% { translate: 0 -14px; opacity: 1; }
+        }
+
+        .loading-progress {
+            width: 160px;
+            height: 8px;
+            margin: 14px auto 0 auto;
+            background: rgba(91, 130, 166, 0.15);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .loading-progress > span {
+            display: block;
+            height: 100%;
+            width: 40%;
+            background: linear-gradient(90deg, var(--primary-blue), #8ab3d0);
+            border-radius: 999px;
+            animation: load-swipe 1.1s ease-in-out infinite;
+        }
+
+        @keyframes load-swipe {
+            0% { transform: translateX(-60%); }
+            50% { transform: translateX(120%); }
+            100% { transform: translateX(240%); }
+        }
+
+        /* NOTE: styling receiver img untuk slide 8 ada di style.css (supaya konsisten). */
+    </style>
+</head>
+<body>
+
+    <!-- LOADING OVERLAY -->
+    <div id="loadingOverlay" class="loading-overlay" aria-busy="true" aria-live="polite">
+        <div class="loading-card">
+            <div class="float-bunga" aria-hidden="true">
+                <div class="bunga b1">🌸</div>
+                <div class="bunga b2">🌼</div>
+                <div class="bunga b3">🌺</div>
+                <div class="bunga b4">💮</div>
+            </div>
+            <div class="loading-title">Loading dulu yaa... ✨</div>
+            <div class="loading-progress"><span></span></div>
+        </div>
+    </div>
+
+    <div class="slide-container">
+
+        <!-- SLIDE 1: AMPLOP AWAL -->
+        <div id="slide-1" class="slide active">
+            <p style="letter-spacing: 2px; font-size: 12px; color: #94a3b8; font-weight:700;">UNDANGAN PRIBADI</p>
+            <h2 class="handwritten" style="font-size: 32px; margin-top: 5px;">buat Ira</h2>
+            <div class="envelope-wrapper" onclick="nextSlide(2)">💌</div>
+            <p style="color: #64748b; font-size: 14px;">Ada sesuatu buat kamu My Jusplen<br>Tap amplopnya buat buka.</p>
+        </div>
+
+        <!-- SLIDE 2: PERTANYAAN AWAL -->
+        <div id="slide-2" class="slide">
+            <div class="polaroid">
+                <!-- Ganti URL gambar di bawah ini dengan foto pasanganmu -->
+                <img src="https://files.catbox.moe/mdqi1s.jpeg" alt="Pasangan">
+                <p class="handwritten" style="margin: 8px 0 0 0; font-size: 14px; color:#5b82a6;">buat Ira</p>
+            </div>
+            <h2 class="handwritten" style="font-size: 26px; line-height: 1.4;">Terima Kekalahan ya</h2>
+            <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+                <button onclick="nextSlide(3)">Iya Pariss!</button>
+                <button class="btn-secondary" id="btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">ga ah</button>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: CELEBRATION ANIMATION -->
+        <div id="slide-3" class="slide">
+            <h1 class="handwritten" style="font-size: 48px; color: var(--primary-blue); margin-bottom: 10px;">Yeay!</h1>
+            <p class="handwritten" style="font-size: 20px; color: #64748b;">Ira bilang Iya  💖</p>
+            <div style="font-size: 40px; margin: 20px 0;">✨🎈🎉</div>
+            <button onclick="nextSlide(4)">Lanjut buat jadwal</button>
+        </div>
+
+        <!-- SLIDE 4: JADWAL FREE -->
+        <div id="slide-4" class="slide">
+            <p class="handwritten" style="color: #94a3b8;">buat Ira</p>
+            <h2 class="handwritten" style="font-size: 28px;">Kapan Ira free?</h2>
+            <input type="date" id="input-date">
+            <div class="pills-container" id="time-pills">
+                <div class="pill" onclick="selectPill(this, 'time')">Pagi</div>
+                <div class="pill" onclick="selectPill(this, 'time')">Siang</div>
+                <div class="pill" onclick="selectPill(this, 'time')">Sore</div>
+                <div class="pill" onclick="selectPill(this, 'time')">Malam</div>
+            </div>
+            <button onclick="saveJadwal()">Lanjut</button>
+        </div>
+
+        <!-- SLIDE 5: PILIHAN AKTIVITAS -->
+        <div id="slide-5" class="slide">
+            <p style="font-size: 12px; color: #94a3b8; font-weight:700; margin:0;">rencana kita</p>
+            <h2 class="handwritten" style="font-size: 28px; margin-top:5px;">Nanti kita ngapain Ira?</h2>
+            <div class="grid-options">
+                <div class="grid-item" onclick="selectGrid(this)"><span>🍝</span>Makan bareng</div>
+                <div class="grid-item" onclick="selectGrid(this)"><span>☕</span>Ngopi cantik</div>
+                <div class="grid-item" onclick="selectGrid(this)"><span>🎬</span>Nonton</div>
+                <div class="grid-item" onclick="selectGrid(this)"><span>🌅</span>Jalan sore</div>
+                <div class="grid-item" onclick="selectGrid(this)"><span>🧺</span>Piknik</div>
+                <div class="grid-item" onclick="selectGrid(this)"><span>🎮</span>Main bareng</div>
+                <div class="grid-item" onclick="selectGrid(this)"><span>🛍️</span>Belanja</div>
+                <div class="grid-item" onclick="selectGrid(this)"><span>🛋️</span>Mager di rumah</div>
+            </div>
+            <input type="text" id="custom-activity" placeholder="atau tulis ide kamu...">
+            <button onclick="saveActivity()">Oke</button>
+        </div>
+
+        <!-- SLIDE 6: DRESS CODE -->
+        <div id="slide-6" class="slide">
+            <p style="font-size: 12px; color: #94a3b8; font-weight:700; margin:0;">biar makin niat</p>
+            <h2 class="handwritten" style="font-size: 28px; margin-top:5px;">Dress code-nya?</h2>
+            <div class="pills-container" id="dress-pills">
+                <div class="pill" onclick="selectPill(this, 'dress')">Santai aja</div>
+                <div class="pill" onclick="selectPill(this, 'dress')">Cutesy / imut</div>
+                <div class="pill" onclick="selectPill(this, 'dress')">Rapi / formal</div>
+                <div class="pill" onclick="selectPill(this, 'dress')">Couple-an</div>
+                <div class="pill" onclick="selectPill(this, 'dress')">Satu warna</div>
+            </div>
+            <input type="text" id="custom-dress" placeholder="atau tulis sendiri...">
+            <button onclick="saveDressCode()">Lanjut</button>
+        </div>
+
+        <!-- SLIDE 7: PESAN TAMBAHAN -->
+        <div id="slide-7" class="slide">
+            <p style="font-size: 12px; color: #94a3b8; font-weight:700; margin:0;">terakhir</p>
+            <h2 class="handwritten" style="font-size: 28px; margin-top:5px;">Ada pesan buat Farizh?</h2>
+            <textarea id="input-pesan" rows="4" placeholder="opsional, boleh kosong..."></textarea>
+            <button onclick="generateTicket()">Bikin tiketnya</button>
+        </div>
+
+<!-- SLIDE 8: HASIL TIKET FINAL -->
+<div id="slide-8" class="slide">
+
+    <div id="ticket-capture" class="ticket-card">
+
+        <div class="ticket-top">
+            <span class="admit">Ira Jamet</span>
+
+            <div class="stamp" aria-hidden="true">❤</div>
+        </div>
+
+        <h2 class="ticket-title">Tiket Jadwal</h2>
+
+        <div class="receiver">
+            <img src="https://files.catbox.moe/mdqi1s.jpeg" alt="Foto Ira">
+            <div>
+                <small>UNTUK</small>
+                <div class="value" id="t-nama">Ira</div>
+            </div>
+        </div>
+
+        <div class="ticket-divider" aria-hidden="true"></div>
+
+        <div class="ticket-item">
+            <div class="icon" aria-hidden="true">🕒</div>
+
+            <div class="ticket-text">
+                <small>KAPAN</small>
+                <div class="value" id="t-waktu">-</div>
+            </div>
+        </div>
+
+        <div class="ticket-item">
+            <div class="icon" aria-hidden="true">👜</div>
+
+            <div class="ticket-text">
+                <small>ACARA</small>
+                <div class="value" id="t-acara">-</div>
+            </div>
+        </div>
+
+        <div class="ticket-item">
+            <div class="icon" aria-hidden="true">🤍</div>
+
+            <div class="ticket-text">
+                <small>DRESS CODE</small>
+                <div class="value" id="t-dress">-</div>
+            </div>
+        </div>
+
+        <div class="ticket-item">
+            <div class="icon" aria-hidden="true">✔</div>
+
+            <div class="ticket-text">
+                <small>PESAN</small>
+                <div class="value special" id="t-pesan">-</div>
+            </div>
+        </div>
+
+        <div class="ticket-divider" aria-hidden="true"></div>
+
+        <p class="ticket-note">
+            Yap, data kamu udah tersampaikan, mari kita jemput hari baiknya yaa 💌
+        </p>
+
+        <div class="ticket-footer">
+            dari Aku, buat Kamu ❤️
+        </div>
+
+    </div>
+
+    <div class="ticket-actions">
+        <button onclick="downloadTicket()">Bagikan tiket 📸</button>
+        <button class="btn-secondary" onclick="shareWhatsApp()">Chat WhatsApp 💬</button>
+    </div>
+
+</div>
+
+    <!-- ==================== LOGIC (JAVASCRIPT) ==================== -->
+    <script>
+        // ==================== LOADING CONTROL ====================
+        (function () {
+            const overlay = document.getElementById('loadingOverlay');
+            if (!overlay) return;
+
+            // Pastikan slide langsung terlihat setelah load singkat
+            const hide = () => {
+                overlay.classList.add('hidden');
+                // hilangkan dari flow setelah animasi opacity selesai
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 400);
+            };
+
+            // Tutup loading setelah DOM siap + sedikit delay biar animasi kebaca
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => setTimeout(hide, 2200));
+            } else {
+                setTimeout(hide, 1200);
+            }
+        })();
+
+        // DATA STATE MANAGEMENT
+        let agendaData = {
+            date: '',
+            timeSlot: '',
+            activity: '',
+            dressCode: '',
+            message: ''
+        };
+
+        // FUNGSI NAVIGASI PINDAH SLIDE
+        function nextSlide(slideNumber) {
+            // Sembunyikan semua slide dengan menghapus class active
+            document.querySelectorAll('.slide').forEach(slide => {
+                slide.classList.remove('active');
+            });
+            // Tampilkan slide tujuan
+            document.getElementById(`slide-${slideNumber}`).classList.add('active');
+        }
+
+        // AKSI JIKA TOMBOL 'GA AH' DI-HOVER/DIKLIK (Trik Kabur)
+        function moveNoButton() {
+            const btnNo = document.getElementById('btn-no');
+            const container = document.querySelector('.slide-container');
+            if (!btnNo || !container) return;
+
+            const cRect = container.getBoundingClientRect();
+            const btnW = btnNo.offsetWidth;
+            const btnH = btnNo.offsetHeight;
+            const margin = 20;
+
+            // Ambil posisi tombol saat ini (kalau sudah pernah diposisikan, pakai style; kalau belum, pakai bounding rect)
+            let currentLeft = parseFloat(btnNo.style.left || 'NaN');
+            let currentTop = parseFloat(btnNo.style.top || 'NaN');
+
+            if (Number.isNaN(currentLeft) || Number.isNaN(currentTop)) {
+                const bRect = btnNo.getBoundingClientRect();
+                currentLeft = bRect.left - cRect.left;
+                currentTop = bRect.top - cRect.top;
+            }
+
+            // Biar tidak terlalu jauh: geser di sekitar CENTER (lebih dekat/luwes)
+            // Kita buat zona target di tengah container: 40% lebar & tinggi.
+            const zoneFactor = 0.4;
+            const zoneW = cRect.width * zoneFactor;
+            const zoneH = cRect.height * zoneFactor;
+
+            const centerX = (cRect.width - btnW) / 2;
+            const centerY = (cRect.height - btnH) / 2;
+
+            const zoneMinX = centerX - (zoneW - btnW) / 2;
+            const zoneMinY = centerY - (zoneH - btnH) / 2;
+            const zoneMaxX = centerX + (zoneW - btnW) / 2;
+            const zoneMaxY = centerY + (zoneH - btnH) / 2;
+
+            // Clamp biar tetap di dalam container
+            const minX = margin;
+            const minY = margin;
+            const maxX = Math.max(minX, cRect.width - btnW - margin);
+            const maxY = Math.max(minY, cRect.height - btnH - margin);
+
+            const nextLeft = zoneMinX + Math.random() * (zoneMaxX - zoneMinX);
+            const nextTop = zoneMinY + Math.random() * (zoneMaxY - zoneMinY);
+
+            const clampedLeft = Math.min(maxX, Math.max(minX, nextLeft));
+            const clampedTop = Math.min(maxY, Math.max(minY, nextTop));
+
+
+            btnNo.style.position = 'absolute';
+            btnNo.style.left = `${clampedLeft}px`;
+            btnNo.style.top = `${clampedTop}px`;
+        }
+
+
+
+        // SELEKSI ELEMEN PILLS (WAKTU DAN DRESS CODE)
+        function selectPill(element, type) {
+            const containerId = type === 'time' ? 'time-pills' : 'dress-pills';
+            document.getElementById(containerId).querySelectorAll('.pill').forEach(p => {
+                p.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // SELEKSI ELEMEN GRID AKTIVITAS
+        function selectGrid(element) {
+            document.querySelectorAll('.grid-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            element.classList.add('selected');
+        }
+
+        // VALIDASI DAN SIMPAN DATA SLIDE JADWAL
+        function saveJadwal() {
+            const dateInput = document.getElementById('input-date').value;
+            const selectedPill = document.querySelector('#time-pills .pill.selected');
+            
+            if(!dateInput) {
+                alert('Pilih tanggalnya dulu ya sayang! 🗓️');
+                return;
+            }
+            
+            agendaData.date = dateInput;
+            agendaData.timeSlot = selectedPill ? selectedPill.innerText : 'Bebas';
+            nextSlide(5);
+        }
+
+        // SIMPAN DATA SLIDE AKTIVITAS
+        function saveActivity() {
+            const gridSelected = document.querySelector('.grid-item.selected');
+            const customInput = document.getElementById('custom-activity').value;
+            
+            if(customInput) {
+                agendaData.activity = customInput;
+            } else if (gridSelected) {
+                agendaData.activity = gridSelected.innerText.replace(/[^\w\s]/gi, '').trim(); // bersihkan emoji jika perlu
+            } else {
+                alert('Pilih salah satu rencana aktivitas kita ya! 🥺');
+                return;
+            }
+            nextSlide(6);
+        }
+
+        // SIMPAN DATA SLIDE DRESS CODE
+        function saveDressCode() {
+            const pillSelected = document.querySelector('#dress-pills .pill.selected');
+            const customInput = document.getElementById('custom-dress').value;
+
+            if(customInput) {
+                agendaData.dressCode = customInput;
+            } else if (pillSelected) {
+                agendaData.dressCode = pillSelected.innerText;
+            } else {
+                alert('Tentukan opsi pakaiannya dulu biar serasi! 👕👗');
+                return;
+            }
+            nextSlide(7);
+        }
+
+        // RENDER DAN GENERATE TIKET AKHIR
+        function generateTicket() {
+            agendaData.message = document.getElementById('input-pesan').value || 'JANGAN TELAT LAGI!!!!';
+            
+            // Format tanggal Indonesia sederhana
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateFormatted = new Date(agendaData.date).toLocaleDateString('id-ID', options);
+
+            const waktuText = `${dateFormatted} · ${agendaData.timeSlot} ${agendaData.timeSlot === 'Siang' || agendaData.timeSlot === 'Sore' ? '' : ''}`.replace(/\s+/g, ' ').trim();
+            document.getElementById('t-waktu').innerText = waktuText;
+            document.getElementById('t-acara').innerText = agendaData.activity;
+            document.getElementById('t-dress').innerText = agendaData.dressCode;
+            document.getElementById('t-pesan').innerText = agendaData.message;
+
+
+            nextSlide(8);
+        }
+
+        // CETAK MENJADI GAMBAR MENGGUNAKAN HTML2CANVAS
+        function downloadTicket() {
+            const target = document.getElementById('ticket-capture');
+            html2canvas(target, { backgroundColor: '#ffffff', scale: 2 }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Tiket-Kencan-Ira.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+
+        // KIRIM RINGKASAN REKAPAN VIA CHAT WHATSAPP
+        function shareWhatsApp() {
+            const text = `Halo Farizh! Aku sudah isi tiket nya:\n\n📅 Waktu: ${document.getElementById('t-waktu').innerText}\n🍕 Acara: ${agendaData.activity}\n👗 Dresscode: ${agendaData.dressCode}\n💬 Pesan: ${agendaData.message}\n\nSampai ketemu! ❤️`;
+            const encodedText = encodeURIComponent(text);
+            window.open(`https://wa.me/6289608833355?text=${encodedText}`, '_blank');
+        }
+    </script>
+</body>
+</html>
